@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profes Pre Icfes 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; color: #1f2937; }
+        
+        /* Estilos para impresión (por si alguien imprime la web) */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; color: black; }
+            #ai-section { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Botón Flotante de Acción (Solo visible en pantalla) -->
+    <div class="no-print fixed bottom-6 right-6 z-50">
+        <button onclick="window.print()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full shadow-2xl flex items-center transition transform hover:scale-105">
+            <i class="fas fa-file-pdf mr-2"></i> Guardar como PDF
+        </button>
+    </div>
+
+    <!-- ENCABEZADO -->
+    <header class="bg-white border-b-4 border-orange-500 py-8 px-4 shadow-sm">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <!-- LOGO SVG (Código directo) -->
+            <div class="flex items-center gap-4">
+                <div class="relative w-16 h-16">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M30 20 H60 C75 20 85 30 85 50 C85 70 75 80 60 80 H45 V90 H30 V20 Z" fill="#1e3a8a"/>
+                        <path d="M45 35 H55 C60 35 65 40 65 50 C65 60 60 65 55 65 H45 V35 Z" fill="white"/>
+                        <path d="M20 30 L50 15 L80 30 L50 45 L20 30 Z" fill="#e65a00"/>
+                        <path d="M80 30 V45" stroke="#e65a00" stroke-width="3"/>
+                    </svg>
+                </div>
+                <div class="text-left">
+                    <h1 class="text-3xl md:text-4xl font-bold text-blue-900 leading-tight">PROFES PRE ICFES</h1>
+                    <p class="text-gray-500 text-sm font-semibold tracking-wide">PROPUESTA ACADÉMICA 2026</p>
+                </div>
+            </div>
+            
+            <!-- Badge Destacado -->
+            <div class="bg-blue-50 border border-blue-100 px-6 py-3 rounded-xl text-center">
+                <p class="text-orange-600 font-bold text-xs uppercase tracking-wider">Intensivo Grado 11°</p>
+                <p class="text-blue-900 font-bold text-lg">I.E. Técnico Santander</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-10 space-y-12">
+
+        <!-- ZONA IA (Interactive Feature) -->
+        <section id="ai-section" class="bg-gradient-to-r from-blue-900 to-blue-800 rounded-3xl shadow-xl overflow-hidden text-white no-print">
+            <div class="p-6 md:p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold flex items-center">
+                        <i class="fas fa-robot mr-3 text-yellow-400"></i>
+                        Zona de Entrenamiento IA
+                    </h2>
+                    <span class="bg-white/20 text-xs px-3 py-1 rounded-full backdrop-blur-sm">Exclusivo Profes Pre Icfes</span>
+                </div>
+
+                <!-- Pestañas -->
+                <div class="flex space-x-4 mb-6 border-b border-blue-700 pb-2">
+                    <button onclick="switchTab('simulacro')" id="tab-simulacro" class="font-bold pb-2 border-b-2 border-yellow-400 text-yellow-400 transition">
+                        Simulacro Infinito
+                    </button>
+                    <button onclick="switchTab('tutor')" id="tab-tutor" class="font-medium pb-2 text-blue-200 hover:text-white transition">
+                        Tutor Virtual
+                    </button>
+                </div>
+
+                <!-- Panel Simulacro -->
+                <div id="content-simulacro" class="space-y-4">
+                    <p class="text-blue-200 text-sm mb-4">Selecciona un área y nuestra IA generará una pregunta única tipo ICFES para ti.</p>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4" id="subject-buttons">
+                        <!-- Botones generados por JS -->
+                    </div>
+
+                    <button onclick="generateQuestion()" id="btn-generate" class="w-full bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-4 rounded-xl transition shadow-lg flex justify-center items-center">
+                        <i class="fas fa-magic mr-2"></i> <span id="btn-text">Generar Pregunta Nueva</span>
+                    </button>
+
+                    <!-- Área de Pregunta -->
+                    <div id="question-display" class="hidden mt-6 bg-white text-gray-800 p-6 rounded-xl shadow-lg border-l-4 border-yellow-500">
+                        <!-- Aquí se inyecta la pregunta -->
+                    </div>
+                </div>
+
+                <!-- Panel Tutor -->
+                <div id="content-tutor" class="hidden space-y-4">
+                    <p class="text-blue-200 text-sm">¿Tienes dudas académicas? Pregúntale a nuestro experto virtual.</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="tutor-input" placeholder="Ej: ¿Cuál es la diferencia entre metáfora y símil?" 
+                               class="flex-1 px-4 py-3 rounded-xl text-gray-900 focus:ring-2 focus:ring-yellow-400 outline-none">
+                        <button onclick="askTutor()" class="bg-yellow-500 hover:bg-yellow-600 text-blue-900 px-6 py-3 rounded-xl font-bold transition">
+                            Enviar
+                        </button>
+                    </div>
+                    <div id="tutor-response" class="hidden mt-4 p-4 bg-white/10 border border-white/20 rounded-xl text-white"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTRODUCCIÓN Y METODOLOGÍA -->
+        <section class="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+                <h2 class="text-3xl font-bold text-blue-900 mb-4">Nuestra Propuesta</h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                    En <strong>Profes Pre Icfes</strong>, con más de 13 años de experiencia en colegios de nivel "Muy Superior" en Cali, ofrecemos una preparación estratégica centrada en resultados.
+                </p>
+            </div>
+            <div class="bg-gray-50 border-l-4 border-blue-900 p-6 rounded-r-xl shadow-sm">
+                <h3 class="text-xl font-bold text-blue-900 mb-4 flex items-center">
+                    <i class="fas fa-layer-group mr-2 text-orange-500"></i> Metodología
+                </h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-orange-500 mt-1 mr-3"></i>
+                        <span class="text-gray-700 font-medium">Material Actualizado con preguntas recientes.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-orange-500 mt-1 mr-3"></i>
+                        <span class="text-gray-700 font-medium">Análisis de patrones estructurales del examen.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-orange-500 mt-1 mr-3"></i>
+                        <span class="text-gray-700 font-medium">Lectura Estratégica para todas las áreas.</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- DETALLES Y HORARIOS -->
+        <section class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+            <h2 class="text-2xl font-bold text-blue-900 mb-6 text-center">Detalles del Curso - Julio 2026</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8 text-center mb-8">
+                <div class="p-4 bg-blue-50 rounded-2xl">
+                    <i class="fas fa-clock text-3xl text-blue-600 mb-2"></i>
+                    <p class="font-bold text-gray-800">28 Horas</p>
+                    <p class="text-sm text-gray-500">7 Sesiones Presenciales</p>
+                </div>
+                <div class="p-4 bg-orange-50 rounded-2xl">
+                    <i class="fas fa-book-open text-3xl text-orange-500 mb-2"></i>
+                    <p class="font-bold text-gray-800">Material Físico</p>
+                    <p class="text-sm text-gray-500">1 Cuadernillo + Papelería</p>
+                </div>
+                <div class="p-4 bg-green-50 rounded-2xl">
+                    <i class="fas fa-clipboard-check text-3xl text-green-600 mb-2"></i>
+                    <p class="font-bold text-gray-800">Simulacro</p>
+                    <p class="text-sm text-gray-500">Incluido en sesiones</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-blue-900 text-white p-6 rounded-2xl text-center">
+                    <h3 class="font-bold text-orange-400 uppercase text-sm mb-2">Jornada Mañana</h3>
+                    <p class="text-3xl font-bold">7:20 AM - 12:00 PM</p>
+                </div>
+                <div class="bg-white border-2 border-blue-900 text-blue-900 p-6 rounded-2xl text-center">
+                    <h3 class="font-bold text-blue-900 uppercase text-sm mb-2">Jornada Tarde</h3>
+                    <p class="text-3xl font-bold">1:00 PM - 5:30 PM</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CRONOGRAMA -->
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="far fa-calendar-alt mr-3 text-blue-900"></i> Cronograma de Sesiones
+            </h2>
+            <div class="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-200">
+                <div class="divide-y divide-gray-100">
+                    <!-- Filas del cronograma -->
+                    <div class="p-4 flex justify-between items-center hover:bg-gray-50">
+                        <span class="font-bold text-blue-900">Sesión 1</span>
+                        <span class="text-gray-700 font-medium">Martes 14 de Julio</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                        <span class="font-bold text-blue-900">Sesión 2</span>
+                        <span class="text-gray-700 font-medium">Miércoles 15 de Julio</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center hover:bg-gray-50">
+                        <span class="font-bold text-blue-900">Sesión 3</span>
+                        <span class="text-gray-700 font-medium">Jueves 16 de Julio</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                        <span class="font-bold text-blue-900">Sesión 4</span>
+                        <span class="text-gray-700 font-medium">Viernes 17 de Julio</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center hover:bg-gray-50">
+                        <span class="font-bold text-blue-900">Sesión 5</span>
+                        <span class="text-gray-700 font-medium">Martes 21 de Julio</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100">
+                        <span class="font-bold text-blue-900">Sesión 6</span>
+                        <span class="text-gray-700 font-medium">Miércoles 22 de Julio</span>
+                    </div>
+                    <div class="p-4 flex justify-between items-center hover:bg-gray-50">
+                        <span class="font-bold text-blue-900">Sesión 7</span>
+                        <span class="text-gray-700 font-medium">Jueves 24 de Julio</span>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-4 text-center text-gray-500 italic text-sm bg-yellow-50 p-3 rounded-lg">
+                <strong>Nota:</strong> Requerimos el acompañamiento de un docente de la institución durante las jornadas.
+            </p>
+        </section>
+
+        <!-- PRECIO -->
+        <section class="text-center py-8">
+            <h2 class="text-xl font-bold text-gray-600 mb-2 uppercase tracking-wide">Precio por Estudiante</h2>
+            <div class="text-6xl md:text-7xl font-bold text-blue-900">
+                $169.000
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-white py-10 mt-12">
+        <div class="max-w-4xl mx-auto text-center px-4">
+            <div class="w-12 h-12 mx-auto mb-4 opacity-50">
+                <!-- Logo Monocromo Footer -->
+                <svg viewBox="0 0 100 100" fill="white" xmlns="http://www.w3.org/2000/svg">
+                     <path d="M30 20 H60 C75 20 85 30 85 50 C85 70 75 80 60 80 H45 V90 H30 V20 Z" />
+                </svg>
+            </div>
+            <p class="font-bold text-lg mb-2">Profes Pre Icfes</p>
+            <p class="text-gray-400 text-sm mb-6">Expertos en Educación de Alto Desempeño</p>
+            <a href="mailto:cursoenlineaicfes@gmail.com" class="inline-block bg-white/10 hover:bg-white/20 px-6 py-2 rounded-full transition">
+                cursoenlineaicfes@gmail.com
+            </a>
+        </div>
+    </footer>
+
+    <!-- LÓGICA DE INTELIGENCIA ARTIFICIAL -->
+    <script>
+        const apiKey = ""; // La clave se inyectará automáticamente en el entorno
+
+        // --- Estado ---
+        let currentSubject = 'Lectura Crítica';
+        const subjects = ['Lectura Crítica', 'Matemáticas', 'Ciencias', 'Sociales', 'Inglés'];
+
+        // --- Inicialización ---
+        window.onload = () => {
+            const btnContainer = document.getElementById('subject-buttons');
+            subjects.forEach(sub => {
+                const btn = document.createElement('button');
+                btn.innerText = sub;
+                btn.className = `px-4 py-2 rounded-lg text-sm font-semibold transition-all border border-blue-400/30 ${sub === currentSubject ? 'bg-white text-blue-900' : 'bg-blue-800/50 text-blue-200 hover:bg-blue-700'}`;
+                btn.onclick = () => {
+                    currentSubject = sub;
+                    updateSubjectButtons();
+                };
+                btnContainer.appendChild(btn);
+            });
+        };
+
+        function updateSubjectButtons() {
+            const btns = document.getElementById('subject-buttons').children;
+            for (let i = 0; i < btns.length; i++) {
+                const btn = btns[i];
+                if (btn.innerText === currentSubject) {
+                    btn.className = 'px-4 py-2 rounded-lg text-sm font-bold transition-all bg-white text-blue-900 shadow-lg transform scale-105';
+                } else {
+                    btn.className = 'px-4 py-2 rounded-lg text-sm font-semibold transition-all border border-blue-400/30 bg-blue-800/50 text-blue-200 hover:bg-blue-700';
+                }
+            }
+        }
+
+        // --- Tabs ---
+        function switchTab(tab) {
+            const simContent = document.getElementById('content-simulacro');
+            const tutContent = document.getElementById('content-tutor');
+            const simTab = document.getElementById('tab-simulacro');
+            const tutTab = document.getElementById('tab-tutor');
+
+            if (tab === 'simulacro') {
+                simContent.classList.remove('hidden');
+                tutContent.classList.add('hidden');
+                simTab.className = 'font-bold pb-2 border-b-2 border-yellow-400 text-yellow-400 transition';
+                tutTab.className = 'font-medium pb-2 text-blue-200 hover:text-white transition';
+            } else {
+                simContent.classList.add('hidden');
+                tutContent.classList.remove('hidden');
+                tutTab.className = 'font-bold pb-2 border-b-2 border-yellow-400 text-yellow-400 transition';
+                simTab.className = 'font-medium pb-2 text-blue-200 hover:text-white transition';
+            }
+        }
+
+        // --- IA Calls ---
+        async function callGemini(prompt, systemInstruction, isJson) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const body = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemInstruction }] },
+                generationConfig: { responseMimeType: isJson ? "application/json" : "text/plain" }
+            };
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) throw new Error('Error API');
+            const data = await response.json();
+            return data.candidates[0].content.parts[0].text;
+        }
+
+        async function generateQuestion() {
+            const btn = document.getElementById('btn-generate');
+            const btnText = document.getElementById('btn-text');
+            const display = document.getElementById('question-display');
+            
+            // Loading State
+            btn.disabled = true;
+            btnText.innerText = "Creando pregunta con IA...";
+            btn.classList.add('opacity-75');
+
+            try {
+                const system = "Eres un experto profesor del ICFES. Crea una pregunta de selección múltiple desafiante.";
+                const prompt = `Genera una pregunta de ${currentSubject}. JSON: { "pregunta": "...", "opciones": ["A", "B", "C", "D"], "respuesta_correcta": 0, "explicacion": "..." }`;
+                
+                const jsonStr = await callGemini(prompt, system, true);
+                const data = JSON.parse(jsonStr);
+
+                // Render
+                display.classList.remove('hidden');
+                display.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-xs font-bold bg-blue-100 text-blue-800 px-2 py-1 rounded uppercase">${currentSubject}</span>
+                        <span class="text-xs text-gray-400">Generado por Gemini AI</span>
+                    </div>
+                    <p class="text-xl font-medium mb-6 text-gray-900 leading-snug">${data.pregunta}</p>
+                    <div class="space-y-3" id="options-container"></div>
+                    
+                    <button onclick="toggleAnswer()" class="mt-6 text-sm text-blue-600 font-bold hover:underline flex items-center">
+                        <i class="fas fa-eye mr-2"></i> Ver Respuesta y Explicación
+                    </button>
+                    
+                    <div id="answer-box" class="hidden mt-4 p-4 bg-green-50 text-green-900 rounded-xl border border-green-200">
+                        <h4 class="font-bold mb-1">Explicación:</h4>
+                        <p>${data.explicacion}</p>
+                    </div>
+                `;
+
+                const optContainer = document.getElementById('options-container');
+                data.opciones.forEach((opt, idx) => {
+                    const div = document.createElement('div');
+                    div.className = `p-4 rounded-xl border-2 text-base bg-white border-gray-100 text-gray-700 option-item hover:border-blue-100 transition cursor-pointer`;
+                    if (idx === data.respuesta_correcta) div.dataset.correct = "true";
+                    
+                    // Click para seleccionar
+                    div.onclick = function() {
+                        // Reset others
+                        document.querySelectorAll('.option-item').forEach(d => {
+                            d.classList.remove('border-blue-500', 'bg-blue-50');
+                            d.classList.add('border-gray-100');
+                        });
+                        // Highlight this
+                        this.classList.remove('border-gray-100');
+                        this.classList.add('border-blue-500', 'bg-blue-50');
+                    };
+
+                    div.innerHTML = `<span class="font-bold mr-3 text-blue-900">${String.fromCharCode(65 + idx)}.</span> ${opt}`;
+                    optContainer.appendChild(div);
+                });
+
+            } catch (e) {
+                alert("Hubo un error generando la pregunta. Si estás usando el archivo localmente, recuerda configurar tu API Key.");
+                console.error(e);
+            } finally {
+                btn.disabled = false;
+                btnText.innerText = "Generar Pregunta Nueva";
+                btn.classList.remove('opacity-75');
+            }
+        }
+
+        function toggleAnswer() {
+            document.getElementById('answer-box').classList.remove('hidden');
+            const opts = document.querySelectorAll('.option-item');
+            opts.forEach(opt => {
+                if (opt.dataset.correct === "true") {
+                    opt.className = 'p-4 rounded-xl border-2 text-base bg-green-100 border-green-500 text-green-900 font-bold transition';
+                    // Añadir icono de check
+                    opt.innerHTML += ` <i class="fas fa-check-circle float-right mt-1 text-green-600"></i>`;
+                } else if (opt.classList.contains('border-blue-500')) {
+                    // Si seleccionó la incorrecta
+                     opt.className = 'p-4 rounded-xl border-2 text-base bg-red-50 border-red-200 text-red-900 transition opacity-75';
+                }
+            });
+        }
+
+        async function askTutor() {
+            const input = document.getElementById('tutor-input');
+            const responseDiv = document.getElementById('tutor-response');
+            const query = input.value;
+            if (!query) return;
+
+            responseDiv.classList.remove('hidden');
+            responseDiv.innerHTML = `<i class="fas fa-circle-notch fa-spin mr-2"></i> Pensando...`;
+
+            try {
+                const system = "Eres un consejero académico motivador experto en ICFES.";
+                const prompt = `Responde brevemente y con tono motivador: ${query}`;
+                const text = await callGemini(prompt, system, false);
+                responseDiv.innerHTML = text;
+            } catch (e) {
+                responseDiv.innerText = "Error de conexión. (Verifica tu API Key)";
+            }
+        }
+    </script>
+</body>
+</html>
